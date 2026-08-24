@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>😏</title>
+    <style>
+        /* ===== 全屏空白 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== 第一段：还想看呀~🥰🥰🥰（先出现） ===== */
+        .message-first {
+            position: absolute;
+            bottom: 120px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 28px;
+            color: #e07070;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeUp 1.2s ease forwards;
+            animation-delay: 5s;
+            padding: 0 30px;
+            font-weight: 500;
+        }
+
+        /* ===== 第二段：慢慢显现 ===== */
+        .message-second {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px;
+            color: #d4a0a0;
+            letter-spacing: 2px;
+            line-height: 1.8;
+            opacity: 0;
+            animation: slowReveal 4s ease forwards;
+            animation-delay: 6.5s;
+            padding: 0 30px;
+            font-weight: 300;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slowReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+                filter: blur(4px);
+            }
+            30% {
+                opacity: 0.3;
+                transform: translateY(8px);
+                filter: blur(2px);
+            }
+            60% {
+                opacity: 0.6;
+                transform: translateY(3px);
+                filter: blur(1px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        /* ===== 飘落的小心心 ===== */
+        .falling-heart {
+            position: fixed;
+            font-size: 20px;
+            opacity: 0;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) rotate(0deg) scale(0.5);
+            }
+            10% {
+                opacity: 0.9;
+                transform: translateY(10px) rotate(10deg) scale(1);
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(110vh) rotate(720deg) scale(0.3);
+            }
+        }
+
+        /* ===== 右上角小彩蛋 ===== */
+        .corner-hint {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 14px;
+            color: #f0d0d0;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeUp 2s ease forwards;
+            animation-delay: 8s;
+            cursor: default;
+            user-select: none;
+        }
+
+        /* ===== 点击出现的爱心（随机位置 + 弹出动画） ===== */
+        .click-heart {
+            position: fixed;
+            font-size: 60px;
+            pointer-events: none;
+            z-index: 999;
+            animation: popHeart 1.2s ease forwards;
+        }
+
+        @keyframes popHeart {
+            0% {
+                opacity: 0;
+                transform: scale(0.2) translateY(20px) rotate(-20deg);
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1.4) translateY(-10px) rotate(5deg);
+            }
+            60% {
+                transform: scale(1) translateY(0px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-80px) rotate(10deg);
+            }
+        }
+
+        /* ===== 深色模式兼容 ===== */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #ffffff !important;
+            }
+            .message-first {
+                color: #e07070;
+            }
+            .message-second {
+                color: #d4a0a0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 第一段 ===== -->
+    <div class="message-first">
+        还想看呀~🥰🥰🥰
+    </div>
+
+    <!-- ===== 第二段 ===== -->
+    <div class="message-second">
+        那我们以后一起创造更多的美好回忆吧。
+    </div>
+
+    <!-- ===== 右上角小彩蛋 ===== -->
+    <div class="corner-hint">💭 就知道你会等着看</div>
+
+    <script>
+        (function() {
+            // ===== 5秒后开始飘落小心心 =====
+            setTimeout(function() {
+                const hearts = ['❤️', '💕', '💗', '✨', '💖', '🥰'];
+                let count = 0;
+                const maxHearts = 40;
+
+                const interval = setInterval(function() {
+                    if (count >= maxHearts) {
+                        clearInterval(interval);
+                        return;
+                    }
+
+                    const heart = document.createElement('div');
+                    heart.className = 'falling-heart';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+
+                    const size = 16 + Math.random() * 28;
+                    heart.style.fontSize = size + 'px';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '-20px';
+
+                    const duration = 2.5 + Math.random() * 3.5;
+                    heart.style.animationDuration = duration + 's';
+
+                    const xOffset = (Math.random() - 0.5) * 150;
+                    const uniqueId = 'heart-' + Date.now() + '-' + count;
+                    heart.id = uniqueId;
+
+                    const styleSheet = document.createElement('style');
+                    styleSheet.textContent = `
+                        #${uniqueId} {
+                            animation: fall_${uniqueId} ${duration}s linear forwards;
+                        }
+                        @keyframes fall_${uniqueId} {
+                            0% { opacity: 0; transform: translateY(-30px) translateX(0) rotate(0deg) scale(0.5); }
+                            10% { opacity: 0.9; transform: translateY(10px) translateX(${xOffset * 0.2}px) rotate(10deg) scale(1); }
+                            90% { opacity: 0.9; transform: translateY(90vh) translateX(${xOffset}px) rotate(720deg) scale(0.8); }
+                            100% { opacity: 0; transform: translateY(110vh) translateX(${xOffset * 1.2}px) rotate(1080deg) scale(0.2); }
+                        }
+                    `;
+                    document.head.appendChild(styleSheet);
+
+                    document.body.appendChild(heart);
+
+                    setTimeout(function() {
+                        if (heart.parentNode) heart.remove();
+                    }, duration * 1000 + 500);
+
+                    count++;
+                }, 200);
+
+            }, 5000);
+
+            // ===== 点击任意位置3次，随机位置弹出 ❤️ =====
+            let clickCount = 0;
+
+            document.addEventListener('click', function(e) {
+                clickCount++;
+
+                if (clickCount === 3) {
+                    // 重置计数
+                    clickCount = 0;
+
+                    // 随机生成位置（避开边缘，确保爱心完整显示）
+                    const heartSize = 60; // 和CSS里的font-size一致
+                    const maxX = window.innerWidth - heartSize;
+                    const maxY = window.innerHeight - heartSize;
+                    
+                    const randomX = Math.random() * maxX;
+                    const randomY = Math.random() * maxY;
+
+                    // 创建爱心元素
+                    const heart = document.createElement('div');
+                    heart.className = 'click-heart';
+                    heart.textContent = '❤️';
+                    heart.style.left = randomX + 'px';
+                    heart.style.top = randomY + 'px';
+
+                    // 随机大小（让每次出现不一样）
+                    const randomSize = 40 + Math.random() * 50;
+                    heart.style.fontSize = randomSize + 'px';
+
+                    // 随机旋转起始角度
+                    const randomRotate = (Math.random() - 0.5) * 40;
+                    heart.style.setProperty('--random-rotate', randomRotate + 'deg');
+
+                    // 动态修改动画，加入随机旋转
+                    const uniqueId = 'clickheart-' + Date.now();
+                    heart.id = uniqueId;
+
+                    const styleSheet = document.createElement('style');
+                    styleSheet.textContent = `
+                        #${uniqueId} {
+                            animation: popHeart_${uniqueId} 1.2s ease forwards;
+                        }
+                        @keyframes popHeart_${uniqueId} {
+                            0% {
+                                opacity: 0;
+                                transform: scale(0.2) translateY(20px) rotate(${randomRotate - 15}deg);
+                            }
+                            30% {
+                                opacity: 1;
+                                transform: scale(1.5) translateY(-15px) rotate(${randomRotate + 5}deg);
+                            }
+                            60% {
+                                transform: scale(1.1) translateY(0px) rotate(${randomRotate}deg);
+                            }
+                            100% {
+                                opacity: 0;
+                                transform: scale(0.9) translateY(-100px) rotate(${randomRotate + 20}deg);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(styleSheet);
+
+                    document.body.appendChild(heart);
+
+                    // 动画结束后移除元素
+                    setTimeout(function() {
+                        if (heart.parentNode) heart.remove();
+                    }, 1300);
+                }
+            });
+
+            // ===== 控制台小彩蛋 =====
+            console.log('%c💕 就知道你会打开控制台', 'font-size:24px; color:#e07070;');
+            console.log('%c那我们以后一起创造更多的美好回忆吧 ✨', 'font-size:16px; color:#d4a0a0;');
+
+        })();
+    </script>
+
+</body>
+</html>
